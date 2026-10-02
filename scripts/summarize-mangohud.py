@@ -30,10 +30,20 @@ def fnum(s):
 def summarize(path):
     with open(path, newline="", encoding="utf-8", errors="replace") as f:
         rows = list(csv.reader(f))
-    if not rows:
+    # MangoHud CSV: 1-2 строки метаданных (os,cpu,gpu,ram,...), затем строка
+    # заголовка с fps,frametime,..., затем данные. Ищем строку с fps+frametime.
+    hdr_i = None
+    for i, r in enumerate(rows):
+        low = [h.strip().lower() for h in r]
+        if "fps" in low and "frametime" in low:
+            hdr_i = i
+            break
+    if hdr_i is None or hdr_i + 1 >= len(rows):
         return None
-    hdr, data = rows[0], rows[1:]
-    fi, ti = cols(hdr)
+    low = [h.strip().lower() for h in rows[hdr_i]]
+    fi = low.index("fps")
+    ti = low.index("frametime")
+    data = rows[hdr_i + 1:]
     fps = [v for v in (fnum(r[fi]) for r in data if fi is not None and fi < len(r)) if v and v > 0]
     ft = [v for v in (fnum(r[ti]) for r in data if ti is not None and ti < len(r)) if v and v > 0]
     if not fps:

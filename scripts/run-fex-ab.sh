@@ -34,8 +34,10 @@ export TAG="fex-${PROFILE}"
 export HUDLOG="$TIMEOUT"
 export HUDINTERVAL=100
 
+set +e
 bash "$TURNIP/scripts/run-game.sh" patched "$TIMEOUT"
 RC=$?
+set -e
 
 # Перенос результатов в fex-a7xx (MangoHud CSV в /tmp/opencode/mangologs — tmpfs)
 shopt -s nullglob
