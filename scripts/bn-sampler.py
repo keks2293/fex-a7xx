@@ -13,7 +13,7 @@ import sys
 import time
 
 INTERVAL = 0.1
-GAME_DISK = "21:32"  # /dev/sdg2 (Z Slim, exFAT)
+GAME_DISK = "8:96"  # /dev/sdg (Z Slim, exFAT; I/O атрибутируется на целый диск)
 MAX_SECS = 420
 IO_PATH = "/sys/fs/cgroup/io.stat"
 
